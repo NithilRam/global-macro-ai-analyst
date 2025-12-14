@@ -1,10 +1,18 @@
-"""
+from openai import OpenAI
+
+client = OpenAI()
+
+# --- Prompt template (your framework) ---
+prompt_template = """
 You are a global macro-financial analyst supporting an investment and strategy team.
 
-Your task is to analyze how major geopolitical event and/or risks can affect financial
+Your task is to analyze how the following major geopolitical event and/or risks can affect financial
 markets in the United States and the Eurozone. The focus should be on how
 geopolitical developments are manifested through economic conditions, policy
 constraints, and risk perception to impact market outcomes.
+
+GEOPOLITICAL EVENT / RISK:
+{event}
 
 Write your analysis for an internal investment or strategy committee.
 
@@ -37,6 +45,27 @@ trade recommendations.
 Focus on clear financial reasoning and structured analysis.
 """
 
+# --- Choose an event (edit this anytime) ---
+event = """
+Yemeni instability and Houthi attacks on commercial shipping in the Red Sea and Bab el-Mandeb Strait
+have increased shipping insurance costs, forced rerouting around the Cape of Good Hope, and raised
+risks to global supply chains and energy flows into Europe.
+""".strip()
 
+prompt = prompt_template.format(event=event)
 
+# --- Call the LLM ---
+response = client.responses.create(
+    model="gpt-4o-mini",
+    input=prompt,
+)
 
+memo = response.output_text
+
+# --- Output ---
+print(memo)
+
+with open("generated_memo.md", "w", encoding="utf-8") as f:
+    f.write(memo)
+
+print("\nSaved to generated_memo.md")
