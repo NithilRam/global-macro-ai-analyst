@@ -1,7 +1,5 @@
 from openai import OpenAI
 
-print("STARTING SCRIPT")
-
 client = OpenAI()
 
 # --- Prompt template ---
@@ -48,11 +46,8 @@ Focus on clear financial reasoning and structured analysis.
 """
 
 # --- Event input ---
-event = """
-Yemeni instability and Houthi attacks on commercial shipping in the Red Sea and
-Bab el-Mandeb Strait have increased shipping costs, forced vessel rerouting, and
-raised risks to global trade and energy supply into Europe.
-"""
+print("\nEnter a geopolitical event or risk scenario:")
+event = input("> ")
 
 prompt = prompt_template.format(event=event)
 
