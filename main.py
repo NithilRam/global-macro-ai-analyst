@@ -1,17 +1,17 @@
-print("STARTING SCRIPT")
-
 from openai import OpenAI
+
+print("STARTING SCRIPT")
 
 client = OpenAI()
 
-# --- Prompt template (your framework) ---
+# --- Prompt template ---
 prompt_template = """
 You are a global macro-financial analyst supporting an investment and strategy team.
 
 Your task is to analyze how the following major geopolitical event and/or risks can affect financial
-markets in the United States and the Eurozone. The focus should be on how
-geopolitical developments are manifested through economic conditions, policy
-constraints, and risk perception to impact market outcomes.
+markets in the United States and the Eurozone. The focus should be on how geopolitical developments
+are manifested through economic conditions, policy constraints, and risk perception to impact
+market outcomes.
 
 GEOPOLITICAL EVENT / RISK:
 {event}
@@ -47,24 +47,25 @@ trade recommendations.
 Focus on clear financial reasoning and structured analysis.
 """
 
-# --- Choose an event (edit this anytime) ---
+# --- Event input ---
 event = """
-Yemeni instability and Houthi attacks on commercial shipping in the Red Sea and Bab el-Mandeb Strait
-have increased shipping insurance costs, forced rerouting around the Cape of Good Hope, and raised
-risks to global supply chains and energy flows into Europe.
-""".strip()
+Yemeni instability and Houthi attacks on commercial shipping in the Red Sea and
+Bab el-Mandeb Strait have increased shipping costs, forced vessel rerouting, and
+raised risks to global trade and energy supply into Europe.
+"""
 
 prompt = prompt_template.format(event=event)
 
-# --- Call the LLM ---
+print("SENDING PROMPT TO LLM")
+
 response = client.responses.create(
     model="gpt-4o-mini",
-    input=prompt,
+    input=prompt
 )
 
-memo = response.output_text
+memo = response.output[0].content[0].text
 
-# --- Output ---
+print("RESPONSE RECEIVED\n")
 print(memo)
 
 with open("generated_memo.md", "w", encoding="utf-8") as f:
