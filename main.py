@@ -1,3 +1,5 @@
+print("STARTING SCRIPT")
+
 from openai import OpenAI
 
 client = OpenAI()
